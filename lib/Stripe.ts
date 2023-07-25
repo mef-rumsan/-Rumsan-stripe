@@ -17,11 +17,14 @@ class StripeWrapper {
     });
   }
 
-  createIntent(payload: createIntent, options?: obj | undefined): Promise<any> {
+  protected createIntent(
+    payload: createIntent,
+    options?: obj | undefined
+  ): Promise<any> {
     return this.stripeInstance.paymentIntents.create(payload, options);
   }
 
-  fetchIntent(
+  protected fetchIntent(
     client_secret: string,
     params?: obj | undefined,
     options?: obj | undefined
@@ -33,7 +36,7 @@ class StripeWrapper {
     );
   }
 
-  cancelIntent(
+  protected cancelIntent(
     client_secret: string,
     params?: obj | undefined,
     options?: obj | undefined
@@ -45,7 +48,7 @@ class StripeWrapper {
     );
   }
 
-  confirmIntent(
+  protected confirmIntent(
     client_secret: string,
     params?: obj | undefined,
     options?: obj | undefined
