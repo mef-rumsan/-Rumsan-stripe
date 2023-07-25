@@ -1,6 +1,12 @@
+interface obj {
+  [key: string]: any;
+}
+
 interface createIntent {
   amount: number;
   currency: string;
+  payment_method_types?: Array<string>;
+  metadata?: obj;
 }
 
 interface responseIntent {
@@ -8,6 +14,7 @@ interface responseIntent {
   currency: string;
   client_secret: string;
   status: string;
+  id: string;
 }
 
-export { createIntent, responseIntent };
+export { createIntent, responseIntent, obj };

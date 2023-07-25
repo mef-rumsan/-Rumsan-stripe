@@ -1,4 +1,5 @@
-import { createIntent } from "./interfaces";
+import constants from "../constants";
+import { createIntent, obj } from "./interfaces";
 import Stripe from "stripe";
 
 class StripeWrapper {
@@ -12,15 +13,49 @@ class StripeWrapper {
 
   private init(): void {
     this.stripeInstance = new Stripe(this.stripeKey, {
-      apiVersion: `2022-11-15`,
+      apiVersion: "2022-11-15",
     });
   }
 
-  createIntent(payload: createIntent): Promise<any> {
-    return this.stripeInstance.paymentIntents.create(payload);
+  createIntent(payload: createIntent, options?: obj | undefined): Promise<any> {
+    return this.stripeInstance.paymentIntents.create(payload, options);
   }
 
-  checkout(payload: any) {}
+  fetchIntent(
+    client_secret: string,
+    params?: obj | undefined,
+    options?: obj | undefined
+  ): Promise<any> {
+    return this.stripeInstance.paymentIntents.retrieve(
+      client_secret,
+      params,
+      options
+    );
+  }
+
+  cancelIntent(
+    client_secret: string,
+    params?: obj | undefined,
+    options?: obj | undefined
+  ): Promise<any> {
+    return this.stripeInstance.paymentIntents.cancel(
+      client_secret,
+      params,
+      options
+    );
+  }
+
+  confirmIntent(
+    client_secret: string,
+    params?: obj | undefined,
+    options?: obj | undefined
+  ): Promise<any> {
+    return this.stripeInstance.paymentIntents.confirm(
+      client_secret,
+      params,
+      options
+    );
+  }
 }
 
 export default StripeWrapper;

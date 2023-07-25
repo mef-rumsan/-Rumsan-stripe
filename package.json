@@ -9,7 +9,6 @@
     "test": "jest tests"
   },
   "dependencies": {
-    "@types/stripe": "^8.0.417",
     "stripe": "^12.14.0",
     "ts-node": "^10.9.1"
   },
