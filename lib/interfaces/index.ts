@@ -17,4 +17,12 @@ interface responseIntent {
   id: string;
 }
 
-export { createIntent, responseIntent, obj };
+interface stripeEvent {
+  id: string;
+  object: string;
+  type: string;
+  data: {
+    object: any;
+  };
+}
+export { createIntent, responseIntent, obj, stripeEvent };

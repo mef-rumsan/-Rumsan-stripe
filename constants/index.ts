@@ -1,3 +1,3 @@
 export default {
-  apiVersion: "2022-11-15",
+  apiVersion: `2022-11-15`,
 };
