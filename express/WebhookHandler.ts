@@ -14,7 +14,12 @@ export class StripeWebhooks {
       apiVersion: "2022-11-15",
     });
   }
-  verifySignature(body: string, signature: string, endpointSecret: string) {
+
+  verifySignature(
+    body: string | Buffer,
+    signature: string,
+    endpointSecret: string
+  ) {
     return this.stripeInstance.webhooks.constructEvent(
       body,
       signature,
