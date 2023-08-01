@@ -6,7 +6,7 @@ describe("StripeWrapper", () => {
     "sk_test_51KZSYDKUR5nwsW1NbLn6GtfE131zTfE0GHVwxkVvA2FGxfTErkBYFTPijSjrjcTh01nwaUTEznX4RtXzC3wnpszN00ALB1IdAk";
 
   beforeEach(() => {
-    instance = Stripe(testKey);
+    instance = Stripe(testKey).paymentsMethods;
   });
 
   test("should create an instance of StripeWrapper", () => {

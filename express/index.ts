@@ -4,7 +4,7 @@ import { EventEmitter } from "events";
 import dotenv from "dotenv";
 dotenv.config();
 
-const port = process.env.PORT || 4242;
+const port = process.env.PORT || 4000;
 const app = express();
 function init(secretKey: string) {
   app.use(express.json());
@@ -52,13 +52,16 @@ function init(secretKey: string) {
     response.send();
   });
 
-  app.listen(port);
   const paymentEventsMethods = {
     on: (event, listener) => paymentEvents.on(event, listener),
-    off: (event, listener) => paymentEvents.off(event, listener),
+    removeListner: (event, listener) =>
+      paymentEvents.removeListener(event, listener),
     once: (event, listener) => paymentEvents.once(event, listener),
   };
   return paymentEventsMethods;
 }
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
 
 export default init;
