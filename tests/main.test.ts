@@ -6,7 +6,7 @@ describe("StripeWrapper", () => {
     "sk_test_51KZSYDKUR5nwsW1NbLn6GtfE131zTfE0GHVwxkVvA2FGxfTErkBYFTPijSjrjcTh01nwaUTEznX4RtXzC3wnpszN00ALB1IdAk";
 
   beforeEach(() => {
-    instance = Stripe(testKey).paymentsMethods;
+    instance = Stripe(testKey).paymentMethods;
   });
 
   test("should create an instance of StripeWrapper", () => {
@@ -17,9 +17,14 @@ describe("StripeWrapper", () => {
     const payload = {
       amount: 100,
       currency: "usd",
+      params: { payment_method: "pm_card_visa" },
+      metaData: {
+        name: "test",
+      },
     };
 
-    const intentResponse = await instance.paymentIntent(payload);
+    const intentResponse = await instance.create(payload);
+    console.log({ intentResponse });
     const client_secret = intentResponse.client_secret;
     expect(intentResponse).toBeDefined();
     expect(intentResponse.amount).toBe(payload.amount);
@@ -33,13 +38,13 @@ describe("StripeWrapper", () => {
       currency: "usd",
     };
 
-    const paymentIntentResponse = await instance.paymentIntent(payload);
+    const paymentIntentResponse = await instance.create(payload);
     const id = paymentIntentResponse.id;
 
     let newPayload = {
       id,
     };
-    const result = await instance.retrieveIntent(newPayload);
+    const result = await instance.retrieve(newPayload);
     expect(result).toBeDefined();
   });
 
@@ -49,14 +54,14 @@ describe("StripeWrapper", () => {
       currency: "usd",
     };
 
-    const paymentIntentResponse = await instance.paymentIntent(payload);
+    const paymentIntentResponse = await instance.create(payload);
     const id = paymentIntentResponse.id;
 
     let newPayload = {
       id,
       params: { payment_method: "pm_card_visa" },
     };
-    const result = await instance.confirmPayment(newPayload);
+    const result = await instance.confirm(newPayload);
     expect(result).toBeDefined();
   });
 });

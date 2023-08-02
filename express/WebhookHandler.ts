@@ -27,7 +27,7 @@ export class StripeWebhooks {
     );
   }
 
-  handleEvent(event: stripeEvent, status: "success" | "error") {
+  handleEvent(event: stripeEvent, status: "success" | "error" | "default") {
     const eventName = `webhook-payment-${status}`;
     return eventName;
   }
