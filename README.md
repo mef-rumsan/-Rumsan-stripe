@@ -110,10 +110,12 @@ Google stripe provides webhook to post the event of payment
 `PaymentEvents` is a event listner which listens on google stripe webhooks on payment intent success or errors.
 
 ```
-PaymentEvents.on(Eventname,function(err,res){
+PaymentEvents.on(Eventname,function(response){
     // .... code  to handle response
 })
 ```
+
+Here response contains object which contains payment information provided by stripe.
 
 Eventname `webhook-payment-success` listens event on success of payment Intent
 

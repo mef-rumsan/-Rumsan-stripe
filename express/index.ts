@@ -40,8 +40,17 @@ function init(secretKey: string) {
                 event.data.object
               );
               break;
+            case "charge.succeeded":
+              paymentEvents.emit(
+                stripeWebhooks.handleEvent(event, "success"),
+                event.data.object
+              );
+              break;
             default:
-              console.log("Unhandled event type:", event.type);
+              paymentEvents.emit(
+                stripeWebhooks.handleEvent(event, "default"),
+                event.data.object
+              );
           }
         } catch (err) {
           console.log("⚠️ Webhook signature verification failed.", err.message);
