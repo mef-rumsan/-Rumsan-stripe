@@ -45,7 +45,7 @@ import StripePayment from 'rumsan@stripe'
 The package needs to be configured with your account's secret key, which is available in the Stripe Dashboard. Require it with the key's value:
 
 ```
-const { paymentMethods, paymentEvents }= StripePayment("your_secret_key")
+const { paymentMethods, paymentEvents, checkoutSession}= StripePayment("your_secret_key")
 ```
 
 ### Payment Intent methods
@@ -122,3 +122,66 @@ Eventname `webhook-payment-success` listens event on success of payment Intent
 Eventname `webhook-payment-error` listens event on error of payment Intent
 
 Eventname `webhook-payment-default` listens on other events
+
+### Stripe checkout session
+
+All the methods for checkout session are callbale from `checkoutSession` module.
+
+#### Create checkout Session
+
+The `create` method is used to create a new checkout Session.
+
+The payload contains `success_url` ,`items` and `mode` as mandatory.You can pass additional arguments too(check on stripe session)
+`success_url` is redirects to url after creating session.
+`items` contains single item or list of items.Price of item is price code of item found on stripe dashboard not actual price of product.
+
+`mode` are of 3 types "payment","subscription"and "setup".
+
+```
+  const payload = {
+      success_url: "https://test.com/success",
+      items: [{ price: "price_1NbLvXKUR5nwsW1NlqUqZhG4", //
+       quantity: 2 }],
+      mode: "payment",
+    };
+
+ const response = await checkoutSession.create(payload)
+```
+
+The response contains
+
+#### Retrieve checkout session
+
+The `retrieve` method is used to retrieve an session
+
+```
+  const id  = "test_id" // received after  creating session on session object as id
+
+
+
+ const response = await checkoutSession.retrieve(payload)
+```
+
+#### Expire session object
+
+The `expire` method is used to expire session.
+
+```
+  const id  = "test_id" // received after  creating session on session object as id
+
+
+
+ const response = await checkoutSession.expire(payload)
+```
+
+#### Fetch checkout session items
+
+The `listItems` method is used to fetch list items of checkout session.
+
+```
+  const id  = "test_id" // received after  creating session on session object as id
+
+
+
+ const response = await checkoutSession.listItems(payload)
+```

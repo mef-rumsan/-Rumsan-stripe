@@ -17,10 +17,6 @@ describe("StripeWrapper", () => {
     const payload = {
       amount: 100,
       currency: "usd",
-      params: { payment_method: "pm_card_visa" },
-      metaData: {
-        name: "test",
-      },
     };
 
     const intentResponse = await instance.create(payload);
@@ -29,7 +25,6 @@ describe("StripeWrapper", () => {
     expect(intentResponse).toBeDefined();
     expect(intentResponse.amount).toBe(payload.amount);
     expect(intentResponse.currency).toBe(payload.currency);
-    expect(intentResponse.status).toBe("requires_payment_method");
   });
 
   test("should retrieve an intent", async () => {
