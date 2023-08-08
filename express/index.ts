@@ -70,12 +70,5 @@ function init(secretKey: string) {
   };
   return paymentEventsMethods;
 }
-app.listen(port, (err) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log(`Server is running on port ${port}`);
-  }
-});
 
 export default init;

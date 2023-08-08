@@ -1,12 +1,13 @@
 import Stripe from "../index";
 
 describe("Checkout session Methods", () => {
-  let instance;
+  let instance, invoiceInstace;
   const testKey =
     "sk_test_51KZSYDKUR5nwsW1NbLn6GtfE131zTfE0GHVwxkVvA2FGxfTErkBYFTPijSjrjcTh01nwaUTEznX4RtXzC3wnpszN00ALB1IdAk";
 
   beforeEach(() => {
     instance = Stripe(testKey).checkoutSession;
+    invoiceInstace = Stripe(testKey).InvoiceMethods;
   });
 
   test("should create an instance of SessionMethods", () => {
@@ -25,7 +26,7 @@ describe("Checkout session Methods", () => {
     expect(session).toBeDefined();
   });
 
-  test("should retrieve an existing Stripe session", async () => {
+  test("should retrieve an existing Stripe session and generate invoice", async () => {
     const payload = {
       success_url: "https://test.com/success",
       items: [{ price: "price_1NbLvXKUR5nwsW1NlqUqZhG4", quantity: 2 }],
@@ -35,6 +36,12 @@ describe("Checkout session Methods", () => {
 
     const session = await instance.create(payload);
     const sessionInfo = await instance.retrieve(session.id);
+    const invoice = await invoiceInstace.create({
+      customer: "cus_OPZQZkvr2JCmMy",
+      metadata: {
+        checkout_session_id: session.id,
+      },
+    });
     expect(sessionInfo).toBeDefined();
   });
 
