@@ -2,8 +2,10 @@ import express, { Request, Response } from "express";
 import { StripeWebhooks } from "./WebhookHandler";
 import { EventEmitter } from "events";
 import dotenv from "dotenv";
+import { getLogger } from "../utils/logger";
+const serverLogger = getLogger("express:server", "Info");
+const stripeError = getLogger("express:stripeWebhook", "Error");
 dotenv.config();
-
 const port = process.env.PORT || 4242;
 const app = express();
 function init(secretKey: string) {
@@ -53,7 +55,7 @@ function init(secretKey: string) {
               );
           }
         } catch (err) {
-          console.log("⚠️ Webhook signature verification failed.", err.message);
+          stripeError("⚠️ Webhook signature verification failed.");
           return response.status(400).send(`Webhook Error: ${err.message}`);
         }
       }
@@ -69,6 +71,14 @@ function init(secretKey: string) {
     once: (event, listener) => paymentEvents.once(event, listener),
   };
   return paymentEventsMethods;
+}
+
+try {
+  app.listen(port, () => {
+    console.log(`Stripe Webhook Server is listening on port ${port}`);
+  });
+} catch (error) {
+  console.error("An error occurred while starting the server:", error);
 }
 
 export default init;

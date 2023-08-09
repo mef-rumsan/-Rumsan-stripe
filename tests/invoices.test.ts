@@ -29,7 +29,6 @@ describe("Checkout Invoice Methods", () => {
 
   test("should void an existing  Invoice", async () => {
     const payload = {};
-
     const Invoice = await instance.create(payload);
     const InvoiceInfo = await instance.void(Invoice.id);
     expect(InvoiceInfo).toBeDefined();
