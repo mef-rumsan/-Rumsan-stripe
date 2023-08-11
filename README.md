@@ -142,7 +142,7 @@ The payload contains `success_url` ,`items` and `mode` as mandatory.You can pass
       success_url: "https://test.com/success",
       items: [{ price: "price_1NbLvXKUR5nwsW1NlqUqZhG4", //
        quantity: 2 }],
-      mode: "payment",
+       onChange={handleApiChangemode: "payment",
     };
 
  const response = await checkoutSession.create(payload)
@@ -157,8 +157,6 @@ The `retrieve` method is used to retrieve an session
 ```
   const id  = "test_id" // received after  creating session on session object as id
 
-
-
  const response = await checkoutSession.retrieve(payload)
 ```
 
@@ -168,8 +166,6 @@ The `expire` method is used to expire session.
 
 ```
   const id  = "test_id" // received after  creating session on session object as id
-
-
 
  const response = await checkoutSession.expire(payload)
 ```
@@ -181,7 +177,77 @@ The `listItems` method is used to fetch list items of checkout session.
 ```
   const id  = "test_id" // received after  creating session on session object as id
 
-
-
  const response = await checkoutSession.listItems(payload)
+```
+
+### Stripe Invoice
+
+All the Invoice method are under InvoicesMethods.For detail understanfing of billing visit `https://stripe.com/docs/billing`.
+Import `InvoiceMethods` as
+
+```
+const { InvoiceMethods }= StripePayment("your_secret_key");
+```
+
+#### Create Invoice
+
+The `create` method is used to create Invoice.You can send a payload refrence to stripe as
+
+```
+const payload = {
+  customer:"your_customer_id"
+  from_invoice:"refrence to any invoice Id "
+}
+const newInvoice =await  InvoiceMethods.create(payload)
+```
+
+you need to provide at least one customer id or invoiceId( refrence to create a invoice) although both are optional
+
+you can pass sessionId as metadata to create Invoice after creating checkout session you can add payload as
+
+```
+const payload = {
+  customer:"your_customer_id"
+  from_invoice:"refrence to any invoice Id "
+  metadata: {
+        checkout_session_id: "customer_session_id",
+      },
+//can pass more arguments as defined in google stripe invoice object
+}
+```
+
+#### Retrieve Invoice
+
+The `retrieve` method is used to create Invoice.You can send a InvoiceID as a param which returns an existing invoice object
+
+```
+const Invoice = await InvoiceMethods.retrieve("Your_invoice_id")
+```
+
+#### Finalize invoice
+
+Stripe automatically finalizes drafts before sending and attempting payment on invoices. However, if you’d like to finalize a draft invoice manually, you can do so using `finalize` method.
+
+```
+const Invoice = await InvoiceMethods.finalize("Your_invoice_id")
+```
+
+#### List Invoices Items
+
+When retrieving an invoice, you’ll get a lines property containing the total count of line items and the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of line items.
+
+```
+const optionalParams = {
+  limit:10
+}
+const items = await InvoiceMethods.listItems("Your_invoice_id",optionalParams)
+```
+
+#### Void an Invoice
+
+Voiding an invoice is similar to deletion, however it only applies to finalized invoices and maintains a papertrail where the invoice can still be found.
+you can call a `void` method to void invoice
+
+```
+const Invoice = await InvoiceMethods.void("Your_invoice_id")
 ```

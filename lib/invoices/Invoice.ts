@@ -34,8 +34,14 @@ class Invoice {
     return this.stripeInstance.invoices.voidInvoice(InvoiceId);
   }
 
-  protected listInvoiceItems(InvoiceId: string): Promise<any> {
-    return this.stripeInstance.invoices.listLineItems(InvoiceId);
+  protected listInvoiceItems(
+    InvoiceId: string,
+    optionalParams?: any
+  ): Promise<any> {
+    return this.stripeInstance.invoices.listLineItems(
+      InvoiceId,
+      optionalParams
+    );
   }
 }
 

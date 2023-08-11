@@ -14,8 +14,8 @@ class InvoiceMethods extends Invoice {
     return this.fetchInvoice(id);
   }
 
-  async listItems(id: string): Promise<any> {
-    return this.listInvoiceItems(id);
+  async listItems(id: string, optionalParams?: obj): Promise<any> {
+    return this.listInvoiceItems(id, optionalParams);
   }
 
   async finalize(id: string): Promise<any> {
